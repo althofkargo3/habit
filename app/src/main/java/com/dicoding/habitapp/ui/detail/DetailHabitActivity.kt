@@ -34,7 +34,7 @@ class DetailHabitActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, factory).get(DetailHabitViewModel::class.java)
 
         viewModel.start(habitId)
-        viewModel.habit.observe(this, { habit ->
+        viewModel.habit.observe(this) { habit ->
             if (habit != null) {
                 selectedHabit = habit
                 findViewById<CollapsingToolbarLayout>(R.id.toolbar_layout).title = habit.title
@@ -42,17 +42,23 @@ class DetailHabitActivity : AppCompatActivity() {
                 findViewById<EditText>(R.id.detail_ed_start_time).setText(habit.startTime)
                 when (habit.priorityLevel) {
                     resources.getStringArray(R.array.priority_level)[0] -> {
-                        findViewById<View>(R.id.detail_priority_level).setBackgroundColor(ContextCompat.getColor(this, R.color.red))
+                        findViewById<View>(R.id.detail_priority_level).setBackgroundColor(
+                            ContextCompat.getColor(this, R.color.red)
+                        )
                     }
                     resources.getStringArray(R.array.priority_level)[1] -> {
-                        findViewById<View>(R.id.detail_priority_level).setBackgroundColor(ContextCompat.getColor(this, R.color.yellow))
+                        findViewById<View>(R.id.detail_priority_level).setBackgroundColor(
+                            ContextCompat.getColor(this, R.color.yellow)
+                        )
                     }
                     else -> {
-                        findViewById<View>(R.id.detail_priority_level).setBackgroundColor(ContextCompat.getColor(this, R.color.green))
+                        findViewById<View>(R.id.detail_priority_level).setBackgroundColor(
+                            ContextCompat.getColor(this, R.color.green)
+                        )
                     }
                 }
             }
-        })
+        }
 
         findViewById<Button>(R.id.btn_open_count_down).setOnClickListener {
             val intent = Intent(this, CountDownActivity::class.java)

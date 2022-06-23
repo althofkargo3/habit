@@ -3,9 +3,12 @@ package com.dicoding.habitapp.ui.random
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.habitapp.R
 import com.dicoding.habitapp.data.Habit
+import com.google.android.material.button.MaterialButton
 
 class RandomHabitAdapter(
     private val onClick: (Habit) -> Unit
@@ -19,8 +22,10 @@ class RandomHabitAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        PagerViewHolder(LayoutInflater.from(parent.context)
-            .inflate(R.layout.pager_item, parent, false))
+        PagerViewHolder(
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.pager_item, parent, false)
+        )
 
     override fun onBindViewHolder(holder: PagerViewHolder, position: Int) {
         val key = getIndexKey(position) ?: return
@@ -40,8 +45,26 @@ class RandomHabitAdapter(
         RecyclerView.ViewHolder(itemView) {
         //TODO 14 : Create view and bind data to item view
 
-        fun bind(pageType: PageType, pageData: Habit) {
+        private val tvTitle: TextView = itemView.findViewById(R.id.pager_tv_title)
+        private val tvStartTime: TextView = itemView.findViewById(R.id.pager_tv_start_time)
+        private val ivPriority: ImageView = itemView.findViewById(R.id.item_priority_level)
+        private val btnOpenCount: MaterialButton = itemView.findViewById(R.id.btn_open)
+        private val tvMinutes: TextView = itemView.findViewById(R.id.pager_tv_minutes)
 
+        fun bind(pageType: PageType, pageData: Habit) {
+            tvTitle.text = pageData.title
+            tvStartTime.text = pageData.startTime
+            tvMinutes.text = pageData.minutesFocus.toString()
+            ivPriority.setImageResource(
+                when (pageType) {
+                    PageType.MEDIUM -> R.drawable.ic_priority_medium
+                    PageType.LOW -> R.drawable.ic_priority_low
+                    else -> R.drawable.ic_priority_high
+                }
+            )
+            btnOpenCount.setOnClickListener {
+                onClick(pageData)
+            }
         }
     }
 }

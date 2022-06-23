@@ -6,11 +6,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.dicoding.habitapp.data.HabitRepository
 import com.dicoding.habitapp.ui.add.AddHabitViewModel
 import com.dicoding.habitapp.ui.detail.DetailHabitViewModel
-import com.dicoding.habitapp.ui.random.RandomHabitViewModel
 import com.dicoding.habitapp.ui.list.HabitListViewModel
+import com.dicoding.habitapp.ui.random.RandomHabitViewModel
 
 class ViewModelFactory private constructor(private val habitRepository: HabitRepository) :
-    ViewModelProvider.Factory{
+    ViewModelProvider.Factory {
 
     companion object {
         @Volatile

@@ -7,10 +7,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.dicoding.habitapp.R
 import com.dicoding.habitapp.ui.ViewModelFactory
+import com.dicoding.habitapp.ui.countdown.CountDownActivity
 import com.dicoding.habitapp.utils.HABIT
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.dicoding.habitapp.ui.countdown.CountDownActivity
 
 class RandomHabitActivity : AppCompatActivity() {
 
@@ -28,21 +28,21 @@ class RandomHabitActivity : AppCompatActivity() {
 
         val tabs: TabLayout = findViewById(R.id.tabs)
         TabLayoutMediator(tabs, viewPager) { tab, position ->
-            tab.text = "Habit ${position+1}"
+            tab.text = "Habit ${position + 1}"
         }.attach()
 
         val factory = ViewModelFactory.getInstance(this)
         val viewModel = ViewModelProvider(this, factory).get(RandomHabitViewModel::class.java)
 
-        viewModel.priorityLevelHigh.observe(this, {
+        viewModel.priorityLevelHigh.observe(this) {
             adapter.submitData(RandomHabitAdapter.PageType.HIGH, it)
-        })
-        viewModel.priorityLevelMedium.observe(this, {
+        }
+        viewModel.priorityLevelMedium.observe(this) {
             adapter.submitData(RandomHabitAdapter.PageType.MEDIUM, it)
-        })
-        viewModel.priorityLevelLow.observe(this, {
+        }
+        viewModel.priorityLevelLow.observe(this) {
             adapter.submitData(RandomHabitAdapter.PageType.LOW, it)
-        })
+        }
 
     }
 }
