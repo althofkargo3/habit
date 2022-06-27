@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.dicoding.habitapp.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +23,17 @@ abstract class HabitDatabase : RoomDatabase() {
 
     abstract fun habitDao(): HabitDao
 
+    class DatabaseCallback(private val context: Context): RoomDatabase.Callback(){
+        override fun onCreate(db: SupportSQLiteDatabase) {
+            super.onCreate(db)
+
+            val instance = getInstance(context)
+            CoroutineScope(Dispatchers.IO).launch {
+                fillWithStartingData(context, instance.habitDao())
+            }
+        }
+    }
+
     companion object {
 
         @Volatile
@@ -33,11 +45,8 @@ abstract class HabitDatabase : RoomDatabase() {
                     context.applicationContext,
                     HabitDatabase::class.java,
                     "habit.db"
-                ).build()
+                ).addCallback(DatabaseCallback(context)).build()
                 INSTANCE = instance
-                CoroutineScope(Dispatchers.IO).launch {
-                    fillWithStartingData(context, instance.habitDao())
-                }
                 instance
             }
         }
